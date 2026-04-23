@@ -1,143 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Shinchan Secure Login</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      font-family: monospace;
-      color: #00ff00;
-      overflow: hidden;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    .login-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.8);
-      padding: 30px;
-      border: 1px solid #00ff00;
-      box-shadow: 0 0 20px #00ff00;
-      text-align: center;
-    }
-
-    input {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 200px;
-      background: black;
-      border: 1px solid #00ff00;
-      color: #00ff00;
-    }
-
-    button {
-      padding: 10px 20px;
-      background: black;
-      border: 1px solid #ff0000;
-      color: #ff0000;
-      cursor: pointer;
-      box-shadow: 0 0 10px #ff0000;
-    }
-
-    h2 {
-      color: #00ff00;
-      text-shadow: 0 0 10px #00ff00;
-    }
-
-    .message {
-      margin-top: 20px;
-      color: #ff0000;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Link Detection & Simulation System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="background"></div>
+    <div class="particles" id="particlesContainer"></div>
 
-<canvas id="matrix"></canvas>
-
-<div class="login-box">
-  <h2>Hacker Login</h2>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="login()">Access</button>
-  <div class="message" id="msg"></div>
-</div>
-
-<script>
-  // Matrix Effect
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-
-  const letters = "01";
-  const fontSize = 14;
-  const columns = canvas.width / fontSize;
-
-  const drops = [];
-  for (let x = 0; x < columns; x++) drops[x] = 1;
-
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0f0";
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters.charAt(Math.floor(Math.random() * letters.length));
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-        drops[i] = 0;
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(draw, 33);
-
-  // Auto Password Logic
-  function generatePassword() {
-    const now = new Date();
-    let hour = now.getHours();
-    let min = now.getMinutes();
-
-    min = (min + 29) % 60; // your logic (3:00 -> 3:29)
-
-    return hour + "." + (min < 10 ? "0" + min : min);
-  }
-
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-
-    const correctUser = "shinchan";
-    const correctPass = generatePassword();
-
-    if (user === correctUser && pass === correctPass) {
-      document.body.innerHTML = `
-        <div style="color:#00ff00; text-align:center; margin-top:20%; font-size:24px;">
-          🎉 ACCESS GRANTED 🎉<br><br>
-          Congratulations! You will find the solution 💻
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">⚔ SHIELD PROTOCOL ⚔</div>
+            <h1 class="title">PHISHING LINK DETECTOR</h1>
+            <p class="subtitle">Advanced Threat Analysis System</p>
         </div>
-      `;
-    } else {
-      document.getElementById("msg").innerText = "Access Denied!";
-    }
-  }
-</script>
 
+        <!-- Main Interface -->
+        <div class="interface-wrapper">
+            <!-- Left: Radar Section -->
+            <div class="radar-section">
+                <div class="radar">
+                    <div class="radar-sweep"></div>
+                    <div class="radar-center"></div>
+                </div>
+                <div class="status-text" id="radarStatus">SYSTEM READY</div>
+            </div>
+
+            <!-- Right: Input and Results Section -->
+            <div class="input-section">
+                <!-- Input Container -->
+                <div class="input-container" id="inputContainer">
+                    <label class="input-label">Enter Link / URL</label>
+                    <input 
+                        type="text" 
+                        class="input-field" 
+                        id="urlInput" 
+                        placeholder="https://example.com or any text..."
+                        autocomplete="off"
+                    >
+                    <div class="ai-text" id="aiText"></div>
+                </div>
+
+                <!-- Button Container -->
+                <div class="button-container">
+                    <button class="scan-button" id="scanBtn">🔍 ANALYZE</button>
+                    <button class="clear-button" id="clearBtn">CLEAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Panel -->
+        <div class="result-container">
+            <div class="scanning-animation" id="scanningAnimation"></div>
+            <div class="result-panel" id="resultPanel">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <div class="status-label" id="statusLabel"></div>
+                <div class="status-details" id="statusDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
